@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "InfoSec project for freeCodeCamp",
 	"scripts": {
-		"start": "node server.js"
+		"start": "nodemon server.js"
 	},
 	"dependencies": {
 		"body-parser": "^1.15.2",
@@ -15,7 +15,7 @@
 		"express": "^4.17.1",
 		"helmet": "^3.1.0",
 		"mocha": "^3.2.0",
-		"nodemon": "^2.0.7"
+		"request": "^2.88.2"
 	},
 	"repository": {
 		"type": "git",
@@ -25,5 +25,8 @@
 		"node",
 		"express"
 	],
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"nodemon": "^2.0.7"
+	}
 }
