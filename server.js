@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express     = require('express');
 const cors        = require('cors');
+const mongoose    = require('mongoose');
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -15,6 +16,17 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+//connect to db
+mongoose.connect(process.env.DB,
+  { useNewUrlParser: true,
+    useUnifiedTopology:true})
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, ' connection error:'));
+db.once('open', ()=>{
+console.log('DB connected');
+});
 
 //Index page (static HTML)
 app.route('/')
