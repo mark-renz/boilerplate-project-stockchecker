@@ -4,11 +4,11 @@ const axios = require('axios');
 const Stock = require('../models/Stock');
 
 async function getPrice(symbol) {
-  console.log('getPrice');
   const url = `https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/${symbol}/quote`;
-
-  const res = await axios.get(url);
-  const price = await res.data.latestPrice;
+  
+    const res = await axios.get(url).catch(e=>console.log(e));
+    const price = await res.data.latestPrice;
+  
   const data =  {stock:symbol, price:price};
 
   return data;
@@ -16,11 +16,9 @@ async function getPrice(symbol) {
 
 
 async function getLikes(symbol, ip, isLiked) {
-  console.log('getLikes');
 
   //TODO: find data if exist
-  
-  const data = await Stock.findOne({stock: symbol});
+  const data = await Stock.findOne({stock: symbol}).catch(e=>console.log(e));
 
    //TODO: if data && isLiked 
   //if ip exist return likes
@@ -33,7 +31,7 @@ async function getLikes(symbol, ip, isLiked) {
         const myQuery = {stock:symbol} ;
         const newValues = { $push: { likes: [ip] } };
         const options = {new: true};
-        const newData = await Stock.findOneAndUpdate(myQuery,newValues,options);
+        const newData = await Stock.findOneAndUpdate(myQuery,newValues,options).catch(e=>console.log(e));
         
         return {likes : newData.likes.length};
       } else return {likes : data.likes.length};
@@ -51,7 +49,7 @@ async function getLikes(symbol, ip, isLiked) {
       likes: address
     });
 
-    const data = await newStock.save();
+    const data = await newStock.save().catch(e=>console.log(e));
 
     return {likes : data.likes.length};
 
@@ -71,21 +69,38 @@ module.exports = function (app) {
       let data = await Promise.all(
         stocks.map(
           async symbol => {
-            const price = await getPrice(symbol);
-            const like = await getLikes(symbol, ip, isLiked);
+            const price = await getPrice(symbol).catch(e=>console.log(e));
+            const like = await getLikes(symbol, ip, isLiked).catch(e=>console.log(e));
             
             let stockData = price;
             
             stockData.price ?
               stockData.likes = like.likes : stockData = like;
             
-            console.log(stockData);
             return stockData;
-      }))
+      })).catch(e=>console.log(e));
     
     //if single remove to array state
-    data.length > 1 ? data : data = data[0];
-    
+    if(data.length > 1) {
+      const stockLikes = data.map( val => {
+        
+        return val.likes;  
+      });
+      
+      //swap array
+      [stockLikes[0], stockLikes[1]] = [stockLikes[1],stockLikes[0]];
+
+      data = data.map( (val, index) =>{
+        val.rel_likes = val.likes -stockLikes[index] ;
+        delete val.likes;
+        
+        return val;
+      })
+
+      } else {
+      data = data[0];
+    }
+
     res.setHeader('Content-Type', 'application/json');
     res.send({stockData:data});
       }) ();
