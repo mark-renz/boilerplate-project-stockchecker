@@ -20,7 +20,8 @@ app.use(express.urlencoded({extended:true}));
 //connect to db
 mongoose.connect(process.env.DB,
   { useNewUrlParser: true,
-    useUnifiedTopology:true})
+    useUnifiedTopology:true,
+    useFindAndModify: false});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, ' connection error:'));
