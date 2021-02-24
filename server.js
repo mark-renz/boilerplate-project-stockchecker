@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 //apply security using helmet js
-app.use(helmet());
+//app.use(helmet());
 
 
 //connect to db
