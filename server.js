@@ -3,6 +3,7 @@ require('dotenv').config();
 const express     = require('express');
 const cors        = require('cors');
 const mongoose    = require('mongoose');
+const helmet      = require('helmet');
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -17,11 +18,15 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+//apply security using helmet js
+app.use(helmet());
+
+
 //connect to db
 mongoose.connect(process.env.DB,
   { useNewUrlParser: true,
     useUnifiedTopology:true,
-    useFindAndModify: false});
+    useFindAndModify: false });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, ' connection error:'));
