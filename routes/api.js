@@ -101,8 +101,7 @@ module.exports = function (app) {
       data = data[0];
     }
 
-    res.setHeader('Content-Type', 'application/json');
-    res.send({stockData:data});
+    res.json({ stockData:data });
       }) ();
     });
   
