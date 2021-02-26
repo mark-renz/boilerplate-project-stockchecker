@@ -102,7 +102,7 @@ module.exports = function (app) {
     }
 
     console.log({stockData:data});
-    res.json({ stockData:data });
+    return res.json({ stockData:data });
       }) ();
     });
   
