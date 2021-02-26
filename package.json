@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "InfoSec project for freeCodeCamp",
 	"scripts": {
-		"start": "node server.js",
+		"serve": "node server.js",
+		"start": "nodemon server.js",
 		"test": "mocha --timeout 10000"
 	},
 	"dependencies": {

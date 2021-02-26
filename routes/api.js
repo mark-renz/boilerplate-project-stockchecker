@@ -101,6 +101,7 @@ module.exports = function (app) {
       data = data[0];
     }
 
+    console.log({stockData:data});
     res.json({ stockData:data });
       }) ();
     });
