@@ -21,8 +21,8 @@ app.use(express.urlencoded({extended:true}));
 //apply security using helmet js
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc:["'self'"],
-    scriptSrc:["'self'"]
+      defaultSrc: ["'self'"],
+      scriptSrc:  ["'self'"]
   }
 }));
 

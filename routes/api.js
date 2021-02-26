@@ -100,9 +100,7 @@ module.exports = function (app) {
       } else {
       data = data[0];
     }
-
-    console.log({stockData:data});
-    return res.json({ stockData:data });
+    res.send({stockData:data});
       }) ();
     });
   
